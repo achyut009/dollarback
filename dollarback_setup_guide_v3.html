@@ -1,0 +1,100 @@
+<div style="background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; max-width: 680px;">
+  <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 1rem 1.25rem; border-bottom: 0.5px solid var(--border);">
+    <div>
+      <p style="font-weight: 500; font-size: 15px; margin: 0 0 4px;">Set up cashback rewards</p>
+      <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">0 of 5 steps completed &middot; about four minutes</p>
+    </div>
+    <i class="ti ti-x" style="font-size: 16px; color: var(--text-muted);" aria-hidden="true"></i>
+  </div>
+
+  <div id="steps"></div>
+</div>
+
+<script>
+const steps = [
+  { title: "Store setup finished", done: true },
+  { title: "Create your first cashback rule", open: true, body: `
+    <div style="display:flex; gap:16px; align-items:flex-start;">
+      <div style="flex:1;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <span style="font-size:13px; color:var(--text-secondary);">Fill in the details below.</span>
+          <button style="display:flex; align-items:center; gap:6px; padding:4px 10px; height:28px;">
+            <i class="ti ti-help-circle" style="font-size:14px;" aria-hidden="true"></i>
+            Stuck? Get help
+          </button>
+        </div>
+
+        <label style="font-size:13px; color:var(--text-secondary); display:block; margin-bottom:4px;">Title</label>
+        <input type="text" placeholder="e.g. Black Friday cashback" style="width:100%; margin-bottom:2px;">
+        <p style="font-size:12px; color:var(--text-muted); margin:0 0 12px;">Shown to customers at checkout.</p>
+
+        <label style="font-size:13px; color:var(--text-secondary); display:block; margin-bottom:4px;">Applies to</label>
+        <select style="width:100%; margin-bottom:2px;"><option>All products</option><option>Specific collections</option></select>
+        <p style="font-size:12px; color:var(--text-muted); margin:0 0 12px;">Leave as All products, no selection needed.</p>
+
+        <label style="font-size:13px; color:var(--text-secondary); display:block; margin-bottom:4px;">Include/exclude customer tags</label>
+        <div style="display:flex; gap:8px; margin-bottom:2px;">
+          <input type="text" placeholder="Include tags" style="flex:1;">
+          <input type="text" placeholder="Exclude tags" style="flex:1;">
+        </div>
+        <p style="font-size:12px; color:var(--text-muted); margin:0 0 12px;">Leave blank to apply to all customers.</p>
+
+        <label style="font-size:13px; color:var(--text-secondary); display:block; margin-bottom:4px;">Percentage</label>
+        <input type="text" value="5" style="width:100%; margin-bottom:12px;">
+
+        <label style="font-size:13px; color:var(--text-secondary); display:block; margin-bottom:4px;">Credit expires (days)</label>
+        <input type="text" placeholder="90" style="width:100%; margin-bottom:2px;">
+        <p style="font-size:12px; color:var(--text-warning, var(--text-secondary)); margin:0 0 14px;">
+          <i class="ti ti-info-circle" style="font-size:13px; vertical-align:-2px;" aria-hidden="true"></i>
+          Setting an expiry encourages faster redemption. 0 = never expires.
+        </p>
+
+        <button>Create rule</button>
+      </div>
+      <div style="width:170px;">
+        <div style="background: var(--surface-1); border-radius: 12px; padding: 12px; margin-bottom: 8px;">
+          <p style="font-size:11px; color:var(--text-muted); margin:0 0 6px;">Customer preview</p>
+          <p style="font-size:13px; margin:0;">Get <b style="font-weight:500;">5% back</b> in store credit on this order</p>
+        </div>
+        <div style="height:80px; background: var(--bg-accent-muted, var(--surface-1)); border-radius: 12px; display:flex; align-items:center; justify-content:center;">
+          <i class="ti ti-gift" style="font-size:28px; color:var(--text-accent);" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
+  `},
+  { title: "Turn the rule on", body: `
+    <div style="display:flex; align-items:center; justify-content:space-between;">
+      <p style="font-size:13px; color:var(--text-secondary); margin:0;">Customers will start earning immediately once enabled.</p>
+      <button>Enable</button>
+    </div>
+  `},
+  { title: "Show it on your storefront", body: `
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:14px;">Product page cashback</span><button>Enable</button></div>
+      <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:14px;">Cart page cashback</span><button>Enable</button></div>
+    </div>
+  `},
+  { title: "Preview a customer's cashback", body: `
+    <a href="#" style="font-size:14px; color:var(--text-accent);">View on storefront <i class="ti ti-external-link" style="font-size:14px; vertical-align:-2px;" aria-hidden="true"></i></a>
+  `}
+];
+
+const container = document.getElementById('steps');
+steps.forEach((s) => {
+  const row = document.createElement('div');
+  row.style.borderTop = '0.5px solid var(--border)';
+  row.style.padding = '14px 1.25rem';
+  const icon = s.done ? '<i class="ti ti-circle-check" style="font-size:18px; color:var(--text-success);" aria-hidden="true"></i>' : '<i class="ti ti-circle" style="font-size:18px; color:var(--text-muted);" aria-hidden="true"></i>';
+  let html = `<div style="display:flex; align-items:center; justify-content:space-between; cursor:pointer;" class="row-head">
+    <div style="display:flex; align-items:center; gap:10px;">${icon}<span style="font-size:14px;">${s.title}</span></div>
+    ${s.body ? '<i class="ti ti-chevron-down" style="font-size:16px; color:var(--text-muted);" aria-hidden="true"></i>' : ''}
+  </div>`;
+  if (s.body) html += `<div class="row-body" style="margin-top:14px; display:${s.open ? 'block' : 'none'};">${s.body}</div>`;
+  row.innerHTML = html;
+  if (s.body) row.querySelector('.row-head').addEventListener('click', () => {
+    const body = row.querySelector('.row-body');
+    body.style.display = body.style.display === 'none' ? 'block' : 'none';
+  });
+  container.appendChild(row);
+});
+</script>
